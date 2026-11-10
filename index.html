@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700;800&display=swap" rel="stylesheet">
+<title>savyron City — شهر savyron | شبیه‌ساز مدیریت شهر هوشمند</title>
+<style>
+:root{--bg:#0a111f;--panel:#111a2e;--panel2:#16223b;--line:#223253;--tx:#e8eef9;--mut:#8da2c7;--acc:#4cc9f0;--good:#3ddc97;--warn:#ffb703;--bad:#ff5d6c;--solar:#ffd166;--wind:#7bdff2;--gas:#ff8c42}
+*{box-sizing:border-box}
+html,body{margin:0;background:radial-gradient(1200px 600px at 80% -10%,#14234a 0,var(--bg) 60%) fixed;color:var(--tx);font-family:Vazirmatn,"IRANSansX","Segoe UI",Tahoma,system-ui,sans-serif;font-size:14.5px;line-height:1.65;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+button{font-family:inherit;font-size:inherit;font-weight:600;color:inherit;cursor:pointer;transition:transform .15s ease,box-shadow .2s ease,background .2s ease,border-color .2s ease,filter .2s ease;-webkit-tap-highlight-color:transparent}
+button:active:not(:disabled){transform:translateY(1px) scale(.97)}
+button:focus-visible,input:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+header{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;padding:10px 16px;background:linear-gradient(180deg,#0f1a31,#0b1426);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+.brand{font-weight:800;font-size:18px}
+.brand small{color:var(--mut);font-weight:500;margin-inline-start:6px;font-size:12px}
+.chip{background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.02));border:1px solid var(--line);padding:6px 13px;border-radius:999px;display:flex;gap:6px;align-items:center;white-space:nowrap;font-weight:500;backdrop-filter:blur(6px)}
+button.chip{font-weight:600}
+button.chip:hover{border-color:var(--acc);box-shadow:0 0 0 3px rgba(76,201,240,.15);transform:translateY(-1px)}
+.sp{flex:1}
+.seg{display:flex;gap:3px;padding:3px;background:#0a1224;border:1px solid var(--line);border-radius:12px}
+.seg button{background:transparent;border:0;padding:6px 14px;border-radius:9px;color:var(--mut)}
+.seg button:hover{color:var(--tx);background:rgba(255,255,255,.06)}
+.seg button.on{background:linear-gradient(135deg,#6fdcff,#2aa8d8);color:#03212e;font-weight:800;box-shadow:0 3px 10px rgba(76,201,240,.35)}
+main{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:12px;padding:12px;max-width:1700px;margin:auto}
+@media(max-width:1100px){main{grid-template-columns:1fr}}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-bottom:10px}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:9px 11px}
+.kpi .l{color:var(--mut);font-size:12px}
+.kpi .v{font-size:19px;font-weight:800;margin:2px 0}
+.kpi .s{font-size:11.5px;color:var(--mut);min-height:16px}
+.bar{height:6px;background:#0a1224;border-radius:6px;overflow:hidden;margin:5px 0}
+.bar i{display:block;height:100%;width:0;background:var(--good);transition:width .3s,background .3s}
+.cv{background:#000;border:1px solid var(--line);border-radius:14px;overflow:hidden;position:relative}
+.cv canvas{display:block;width:100%;height:auto}
+.evbar{position:absolute;top:8px;inset-inline-start:8px;display:flex;flex-direction:column;gap:5px;max-width:60%}
+.evbar span{background:rgba(10,17,31,.82);border:1px solid #ff8c42;color:#ffd9b8;border-radius:8px;padding:3px 9px;font-size:12px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+@media(max-width:760px){.row2{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px}
+.card h3{margin:0 0 6px;font-size:13px;color:var(--mut);font-weight:600}
+.card canvas{width:100%;height:150px;display:block}
+.legend{display:flex;gap:10px;flex-wrap:wrap;font-size:11.5px;color:var(--mut);margin-top:5px}
+.legend b{display:inline-block;width:10px;height:10px;border-radius:3px;margin-inline-end:4px;vertical-align:-1px}
+.tabs{display:flex;gap:4px;margin-bottom:10px;padding:4px;background:#0a1224;border:1px solid var(--line);border-radius:14px}
+.tabs button{flex:1;background:transparent;border:0;padding:9px 4px;border-radius:10px;font-weight:700;color:var(--mut)}
+.tabs button:hover{color:var(--tx);background:rgba(255,255,255,.06)}
+.tabs button.on{background:linear-gradient(135deg,#6fdcff,#2aa8d8);color:#03212e;box-shadow:0 4px 14px rgba(76,201,240,.35)}
+.pane{display:none}.pane.on{display:block}
+.ctl{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px;margin-bottom:8px}
+.ctl .row{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px}
+.ctl .t{font-weight:700}
+small,.mut{color:var(--mut);font-size:12px}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:8px;border-radius:99px;background:linear-gradient(90deg,#1c2b4d,#2a3d68);outline:none;margin:8px 0;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,#9be9ff,#2aa8d8);border:3px solid #0a1224;box-shadow:0 0 0 2px var(--acc),0 4px 10px rgba(0,0,0,.4);transition:transform .15s}
+input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.15)}
+input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:#4cc9f0;border:3px solid #0a1224;box-shadow:0 0 0 2px var(--acc)}
+input[type=range]:disabled{opacity:.4;cursor:not-allowed}
+.sw{position:relative;width:48px;height:27px;background:#22325a;border-radius:99px;border:1px solid var(--line);padding:0;flex:none;box-shadow:inset 0 2px 5px rgba(0,0,0,.4)}
+.sw::after{content:"";position:absolute;top:3px;right:3px;width:19px;height:19px;border-radius:50%;background:linear-gradient(180deg,#fff,#cfd8ea);box-shadow:0 2px 5px rgba(0,0,0,.4);transition:right .22s cubic-bezier(.4,1.4,.5,1)}
+.sw.on{background:linear-gradient(135deg,#5af0b0,#1fbf7a);border-color:#1fbf7a;box-shadow:0 0 12px rgba(61,220,151,.45)}
+.sw.on::after{right:24px}
+.bld{display:grid;grid-template-columns:34px 1fr auto;gap:8px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:8px 10px;margin-bottom:6px}
+.bld .ic{font-size:22px;text-align:center}
+.bld .nm{font-weight:700}
+.bld .ds{font-size:11.5px;color:var(--mut)}
+.bld .cnt{font-size:11.5px;color:var(--acc);font-weight:500}
+button.buy,button.act{background:linear-gradient(135deg,#6fdcff,#2aa8d8);color:#03212e;border:0;border-radius:11px;padding:8px 12px;font-weight:800;min-width:96px;box-shadow:0 4px 12px rgba(42,168,216,.3),inset 0 1px 0 rgba(255,255,255,.35)}
+button.buy:hover:not(:disabled),button.act:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 18px rgba(42,168,216,.45),inset 0 1px 0 rgba(255,255,255,.35);filter:brightness(1.08)}
+button.buy:disabled,button.act:disabled{background:#1d2a47;color:#6d7fa6;cursor:not-allowed;box-shadow:none}
+.bld,.ctl,.card,.kpi{box-shadow:0 2px 10px rgba(0,0,0,.25);transition:border-color .2s,transform .2s}
+.bld:hover{border-color:#34508a}
+button.act{width:100%;margin-top:4px}
+.mix{display:flex;height:16px;border-radius:8px;overflow:hidden;background:#0a1224}
+.mix i{display:block;height:100%;transition:width .3s}
+.wxbig{display:flex;align-items:center;gap:12px}
+.wxbig .i{font-size:44px}
+.fc{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.fc span{background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:4px 8px;font-size:12px}
+.labgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-top:6px}
+.labgrid button{background:linear-gradient(180deg,var(--panel2),#111b33);border:1px solid var(--line);border-radius:11px;padding:8px 2px;font-size:12px;font-weight:600;line-height:1.5}
+.labgrid button:hover{border-color:var(--acc);transform:translateY(-2px);box-shadow:0 6px 14px rgba(76,201,240,.2)}
+.list{display:flex;flex-direction:column;gap:5px;max-height:190px;overflow:auto}
+.list div{padding:5px 8px;border-radius:8px;background:var(--panel2);border-inline-start:3px solid var(--line);font-size:12.5px}
+.list .good{border-color:var(--good)}.list .warn{border-color:var(--warn)}.list .bad{border-color:var(--bad)}.list .info{border-color:var(--acc)}
+.list time{color:var(--mut);font-size:11px;margin-inline-end:6px}
+.kv{display:grid;grid-template-columns:1fr auto;gap:3px 10px;font-size:12.5px}
+.kv span:nth-child(even){font-weight:700}
+.foot{text-align:center;padding:18px 12px 26px;color:var(--mut);font-size:13px;border-top:1px solid var(--line);margin-top:6px}
+.foot a{color:#b388ff;font-weight:800;text-decoration:none;border-bottom:1px dashed rgba(179,136,255,.5);transition:color .2s,border-color .2s}
+.foot a:hover{color:#d0b3ff;border-bottom-color:#d0b3ff}
+#modal{position:fixed;inset:0;background:rgba(3,7,16,.78);display:none;align-items:center;justify-content:center;z-index:20;padding:16px}
+#modal.on{display:flex}
+#modal .box{background:var(--panel);border:1px solid var(--line);border-radius:16px;max-width:560px;width:100%;padding:18px 20px;max-height:90vh;overflow:auto}
+#modal h2{margin:0 0 8px}
+#modal p,#modal li{line-height:1.9;color:#cdd8ee}
+#modal .btns{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+#modal .btns button{background:linear-gradient(135deg,#6fdcff,#2aa8d8);color:#03212e;border:0;border-radius:12px;padding:10px 20px;font-weight:800;box-shadow:0 4px 14px rgba(42,168,216,.35)}
+#modal .btns button:hover{transform:translateY(-2px);filter:brightness(1.08)}
+#modal .btns button.sec{background:var(--panel2);color:var(--tx);border:1px solid var(--line);box-shadow:none}
+.grade{font-size:46px;font-weight:900;color:var(--acc)}
+/* ===== دکمه‌های رنگی و سه‌بعدی ===== */
+#p_energy{--b1:#ffe08a;--b2:#ff9f1c;--gl:rgba(255,176,40,.42);--bt:#3a2300}
+#p_traffic{--b1:#ffa6c0;--b2:#ff4f86;--gl:rgba(255,90,140,.42);--bt:#3a0a1c}
+#p_weather{--b1:#9aeaff;--b2:#2a9fe0;--gl:rgba(60,170,235,.42);--bt:#03212e}
+#p_res{--b1:#86f7c8;--b2:#1fbf7a;--gl:rgba(50,210,140,.42);--bt:#032a1a}
+.seg button,.tabs button,button.chip,.labgrid button,#modal .btns button{position:relative;overflow:hidden}
+.rip{position:absolute;border-radius:50%;background:rgba(255,255,255,.5);transform:scale(0);animation:rip .55s ease-out forwards;pointer-events:none}
+@keyframes rip{to{transform:scale(1);opacity:0}}
+button.buy,button.act{position:relative;overflow:hidden;isolation:isolate;background:linear-gradient(180deg,var(--b1,#9aeaff),var(--b2,#2a9fe0));color:var(--bt,#03212e);border:0;border-radius:13px;padding:9px 15px;font-weight:800;letter-spacing:.2px;text-shadow:0 1px 0 rgba(255,255,255,.4);box-shadow:0 4px 0 rgba(0,0,0,.38),0 8px 18px var(--gl,rgba(42,168,216,.35)),inset 0 1px 0 rgba(255,255,255,.6)}
+button.buy::after,button.act::after{content:"";position:absolute;top:0;bottom:0;width:40%;left:-60%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.6),transparent);transform:skewX(-20deg);transition:left .65s ease;pointer-events:none}
+button.buy:hover:not(:disabled)::after,button.act:hover:not(:disabled)::after{left:130%}
+button.buy:hover:not(:disabled),button.act:hover:not(:disabled){transform:translateY(-2px);filter:brightness(1.07)}
+button.buy:active:not(:disabled),button.act:active:not(:disabled){transform:translateY(3px) scale(1);box-shadow:0 1px 0 rgba(0,0,0,.38),0 3px 8px var(--gl,rgba(42,168,216,.3)),inset 0 1px 0 rgba(255,255,255,.4)}
+button.buy.can,button.act.can{animation:glowp 2.6s ease-in-out infinite}
+@keyframes glowp{0%,100%{box-shadow:0 4px 0 rgba(0,0,0,.38),0 8px 16px var(--gl),inset 0 1px 0 rgba(255,255,255,.6)}50%{box-shadow:0 4px 0 rgba(0,0,0,.38),0 10px 30px var(--gl),inset 0 1px 0 rgba(255,255,255,.6)}}
+button.buy:disabled,button.act:disabled{background:#182340;color:#6d7fa6;box-shadow:inset 0 0 0 1px #2a3b63;text-shadow:none;cursor:not-allowed;animation:none}
+.bld{border-inline-start:3px solid var(--b2,var(--line))}
+.bld .ic{width:42px;height:42px;display:grid;place-items:center;font-size:22px;background:linear-gradient(145deg,rgba(255,255,255,.12),rgba(255,255,255,.02));border:1px solid var(--line);border-radius:13px;box-shadow:inset 0 1px 0 rgba(255,255,255,.12)}
+.bld{grid-template-columns:44px 1fr auto}
+.pips{display:flex;gap:3px;margin-top:6px;flex-wrap:wrap}
+.pips i{width:13px;height:5px;border-radius:3px;background:#1f2e50}
+.pips i.f{background:linear-gradient(90deg,var(--b1,#9aeaff),var(--b2,#2a9fe0));box-shadow:0 0 7px var(--gl,transparent)}
+.tabs button{display:flex;flex-direction:column;align-items:center;gap:1px;padding:8px 2px 9px;line-height:1.3}
+.tabs button b{font-size:21px;font-weight:400;filter:grayscale(.7) opacity(.8);transition:transform .2s,filter .2s}
+.tabs button span{font-size:12.5px}
+.tabs button:hover b{transform:translateY(-2px) scale(1.1);filter:none}
+.tabs button.on b{filter:none;transform:scale(1.15)}
+.tabs button[data-tab=energy].on{background:linear-gradient(180deg,#ffe08a,#ff9f1c);color:#3a2300;box-shadow:0 4px 0 rgba(0,0,0,.3),0 6px 18px rgba(255,176,40,.45)}
+.tabs button[data-tab=traffic].on{background:linear-gradient(180deg,#ffa6c0,#ff4f86);color:#3a0a1c;box-shadow:0 4px 0 rgba(0,0,0,.3),0 6px 18px rgba(255,90,140,.45)}
+.tabs button[data-tab=weather].on{background:linear-gradient(180deg,#9aeaff,#2a9fe0);color:#03212e;box-shadow:0 4px 0 rgba(0,0,0,.3),0 6px 18px rgba(60,170,235,.45)}
+.tabs button[data-tab=res].on{background:linear-gradient(180deg,#86f7c8,#1fbf7a);color:#032a1a;box-shadow:0 4px 0 rgba(0,0,0,.3),0 6px 18px rgba(50,210,140,.45)}
+.seg button.on{box-shadow:0 3px 0 rgba(0,0,0,.3),0 4px 14px rgba(76,201,240,.4)}
+.labgrid button .ei{display:block;font-size:23px;margin-bottom:1px}
+.labgrid button.on{border-color:var(--acc);background:linear-gradient(180deg,#1b3a5f,#13264a);box-shadow:0 0 16px rgba(76,201,240,.4)}
+#modal .btns button{box-shadow:0 4px 0 rgba(0,0,0,.35),0 8px 18px rgba(42,168,216,.35),inset 0 1px 0 rgba(255,255,255,.5)}
+#modal .btns button.sec{box-shadow:none}
+main>*{min-width:0}
+button{touch-action:manipulation}
+@media(max-width:1100px){
+ main{gap:10px}
+ main>section{display:contents}
+ .kpis{order:1;margin-bottom:0}
+ .cv{order:2}
+ aside{order:3}
+ .row2{order:4;margin-top:0}
+}
+@media(max-width:700px){
+ body{padding-bottom:calc(76px + env(safe-area-inset-bottom))}
+ header{position:static;padding:10px 12px;gap:8px}
+ .brand{font-size:17px;width:100%}
+ .brand small{display:block;margin:0;font-size:11.5px}
+ .chip{padding:5px 10px;font-size:13px}
+ #spd{position:fixed;bottom:calc(12px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);z-index:9;background:rgba(10,18,36,.92);backdrop-filter:blur(10px);box-shadow:0 8px 28px rgba(0,0,0,.55);padding:4px}
+ #spd button{padding:10px 18px;font-size:15px}
+ main{padding:8px}
+ .kpis{grid-template-columns:repeat(2,1fr);gap:6px}
+ .kpi{padding:8px 9px}
+ .kpi .v{font-size:17px}
+ .tabs button{padding:7px 2px 8px}
+ .bld{grid-template-columns:44px 1fr;row-gap:8px}
+ .bld button.buy{grid-column:1/-1;width:100%;padding:11px}
+ .evbar{max-width:85%}
+ .evbar span{font-size:11px;padding:2px 7px}
+ .card canvas{height:130px}
+ .list{max-height:220px}
+ #modal{padding:10px}
+ #modal .box{padding:16px;max-height:92dvh}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">🏙️ savyron City <small>شهر savyron · مرکز فرماندهی شهر هوشمند</small></div>
+  <div class="chip" id="hTime">🕒 —</div>
+  <div class="chip" id="hDay">📅 —</div>
+  <div class="chip" id="hWeather">—</div>
+  <div class="chip" id="hTemp">🌡️ —</div>
+  <div class="chip" id="hSand" style="display:none;border-color:var(--warn);color:var(--warn)">🧪 حالت آزمایشی</div>
+  <div class="sp"></div>
+  <div class="seg" id="spd">
+    <button data-spd="0">⏸</button><button data-spd="1" class="on">۱×</button><button data-spd="3">۳×</button><button data-spd="8">۸×</button>
+  </div>
+  <button class="chip" id="btnHelp">❓ راهنما</button>
+  <button class="chip" id="btnReset">↺ شروع مجدد</button>
+</header>
+
+<main>
+  <section>
+    <div class="kpis" id="kpis"></div>
+    <div class="cv"><canvas id="city"></canvas><div class="evbar" id="evbar"></div></div>
+    <div class="row2">
+      <div class="card"><h3>⚡ برق: تقاضا و تأمین (۴۸ ساعت اخیر، مگاوات)</h3><canvas id="ch1"></canvas>
+        <div class="legend"><span><b style="background:#fff"></b>تقاضا</span><span><b style="background:#3ddc97"></b>خورشید+باد</span><span><b style="background:#ff8c42"></b>گاز</span><span><b style="background:#ff5d6c"></b>کمبود</span></div></div>
+      <div class="card"><h3>📈 شاخص‌های شهر (۴۸ ساعت اخیر)</h3><canvas id="ch2"></canvas>
+        <div class="legend"><span><b style="background:#4cc9f0"></b>رضایت</span><span><b style="background:#ffb703"></b>ترافیک</span><span><b style="background:#b388ff"></b>آلودگی</span><span><b style="background:#2f8fd0"></b>آب</span></div></div>
+    </div>
+    <div class="row2">
+      <div class="card"><h3>🧠 مشاور هوشمند</h3><div class="list" id="advice"></div></div>
+      <div class="card"><h3>📜 گزارش رویدادها</h3><div class="list" id="logbox"></div></div>
+    </div>
+  </section>
+
+  <aside>
+    <div class="tabs" id="tabs">
+      <button data-tab="energy" class="on"><b>⚡</b><span>انرژی</span></button>
+      <button data-tab="traffic"><b>🚦</b><span>ترافیک</span></button>
+      <button data-tab="weather"><b>🌦️</b><span>آب‌وهوا</span></button>
+      <button data-tab="res"><b>💧</b><span>منابع</span></button>
+    </div>
+
+    <div class="pane on" id="p_energy">
+      <div class="ctl">
+        <div class="row"><span class="t">🏭 نیروگاه گازی</span><span><small>خودکار</small> <button class="sw" data-sw="gasAuto" id="sw_gasAuto"></button></span></div>
+        <input type="range" id="gasPct" min="0" max="100" step="1">
+        <small id="gasInfo"></small>
+      </div>
+      <div class="ctl">
+        <div class="row"><span class="t">🏷️ تعرفه برق</span><small id="tarInfo"></small></div>
+        <input type="range" id="tariff" min="0" max="100" step="1">
+        <small>تعرفه بالاتر = درآمد بیشتر، رضایت کمتر</small>
+      </div>
+      <div class="ctl">
+        <div class="t" style="margin-bottom:6px">ترکیب تأمین برق</div>
+        <div class="mix" id="mix"></div>
+        <div class="legend"><span><b style="background:#ffd166"></b>خورشید</span><span><b style="background:#7bdff2"></b>باد</span><span><b style="background:#ff8c42"></b>گاز</span><span><b style="background:#3ddc97"></b>باتری</span></div>
+        <div class="kv" style="margin-top:8px" id="enKv"></div>
+      </div>
+      <div id="bl_energy"></div>
+    </div>
+
+    <div class="pane" id="p_traffic">
+      <div class="ctl">
+        <div class="row"><span class="t">💳 عوارض ورود به مرکز شهر</span><button class="sw" data-sw="toll" id="sw_toll"></button></div>
+        <small>۱۲٪ کاهش خودرو، درآمد عوارض، اما کمی نارضایتی</small>
+      </div>
+      <div class="ctl">
+        <div class="row"><span class="t">🏠 دورکاری در ساعات اوج</span><button class="sw" data-sw="remote" id="sw_remote"></button></div>
+        <small>۱۲٪ کمتر سفر؛ کمی کاهش مالیات، کمی رضایت بیشتر</small>
+      </div>
+      <div class="ctl"><div class="t" style="margin-bottom:6px">وضعیت شبکه معابر</div><div class="kv" id="trKv"></div></div>
+      <div id="bl_traffic"></div>
+    </div>
+
+    <div class="pane" id="p_weather">
+      <div class="ctl">
+        <div class="wxbig"><div class="i" id="wxIcon">☀️</div><div><div class="t" id="wxName" style="font-weight:800;font-size:17px"></div><small id="wxInfo"></small></div></div>
+        <div class="mut" style="margin-top:8px">پیش‌بینی:</div>
+        <div class="fc" id="forecast"></div>
+      </div>
+      <div class="ctl">
+        <div class="t">☁️ بارورسازی ابرها</div>
+        <small>۸ ساعت بارش مصنوعی برای پر کردن مخزن آب (هر ۱۲ ساعت یک‌بار)</small>
+        <button class="act" id="seedBtn"></button>
+      </div>
+      <div class="ctl">
+        <div class="t">🧪 آزمایشگاه سناریو</div>
+        <small>هوا را برای ۱۲ ساعت تغییر دهید تا واکنش شهر را تست کنید (نتیجه نهایی «آزمایشی» می‌شود)</small>
+        <div class="labgrid" id="lab"></div>
+      </div>
+      <div id="bl_weather"></div>
+    </div>
+
+    <div class="pane" id="p_res">
+      <div class="ctl">
+        <div class="row"><span class="t">🚰 جیره‌بندی آب</span><small id="ratInfo"></small></div>
+        <div class="seg" id="rat" style="width:100%"><button data-rat="0" style="flex:1">آزاد</button><button data-rat="1" style="flex:1">سبک</button><button data-rat="2" style="flex:1">متوسط</button><button data-rat="3" style="flex:1">شدید</button></div>
+      </div>
+      <div class="ctl"><div class="t" style="margin-bottom:6px">💰 مالی (امروز)</div><div class="kv" id="finKv"></div></div>
+      <div id="bl_res"></div>
+    </div>
+  </aside>
+</main>
+
+<footer class="foot">تمامی حقوق این سایت مربوط به <a href="https://savyron.github.io/savyron/#projects" target="_blank" rel="noopener noreferrer">savyron</a> است.</footer>
+
+<div id="modal"><div class="box" id="modalBox"></div></div>
+
+<script>
+(function(){
+'use strict';
+/* ============ ابزارها ============ */
+const $=s=>document.querySelector(s);
+const toFa=s=>String(s).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]);
+const fa=n=>Number(n).toLocaleString('fa-IR');
+const f0=n=>fa(Math.round(n));
+const f1=n=>Number(n).toLocaleString('fa-IR',{minimumFractionDigits:1,maximumFractionDigits:1});
+const clamp=(v,a,b)=>v<a?a:v>b?b:v;
+const lerp=(a,b,t)=>a+(b-a)*t;
+const rnd=(a,b)=>a+Math.random()*(b-a);
+const gauss=(h,m,s)=>{let d=Math.abs(h-m);d=Math.min(d,24-d);return Math.exp(-(d*d)/(2*s*s));};
+const pad=n=>String(n).padStart(2,'0');
+const fmtTime=min=>{const m=((min%1440)+1440)%1440;return toFa(pad(Math.floor(m/60)))+':'+toFa(pad(Math.floor(m%60)));};
+
+/* ============ داده‌ها ============ */
+const ITEMS={
+ solar:{n:'پنل خورشیدی',i:'☀️',cost:45,max:12,maint:0.5,desc:'۲۰ مگاوات اوج در روز آفتابی'},
+ wind:{n:'توربین بادی',i:'🌀',cost:65,max:8,maint:0.8,desc:'۱۴ مگاوات در باد کامل · در طوفان خاموش می‌شود'},
+ battery:{n:'ذخیره‌ساز باتری',i:'🔋',cost:90,max:6,maint:1,desc:'۱۰۰ مگاوات‌ساعت · ۵۰ مگاوات شارژ/دشارژ'},
+ efficiency:{n:'برنامه بهینه‌سازی مصرف',i:'💡',cost:120,max:3,maint:1.5,desc:'۶٪ کاهش مصرف برق به ازای هر سطح'},
+ lights:{n:'چراغ‌های هوشمند',i:'🚦',cost:150,max:3,maint:3,desc:'+۱۸٪ ظرفیت معابر در هر سطح'},
+ bus:{n:'خط اتوبوس / مترو',i:'🚌',cost:55,max:12,maint:1.5,desc:'+۳٫۵٪ سهم حمل‌ونقل عمومی'},
+ bike:{n:'مسیر دوچرخه',i:'🚲',cost:20,max:8,maint:0.3,desc:'+۲٪ سهم · آلودگی کمتر'},
+ wtp:{n:'تصفیه‌خانه آب',i:'🚰',cost:120,max:5,maint:2,desc:'۱٫۶ هزار م³ در ساعت · ۳ مگاوات برق'},
+ reservoir:{n:'مخزن / سد',i:'🏞️',cost:150,max:4,maint:0.5,desc:'+۶۰۰ ظرفیت ذخیره آب'},
+ recycling:{n:'بازیافت آب و پسماند',i:'♻️',cost:100,max:3,maint:2,desc:'۶٪ کاهش مصرف آب و کمی آلودگی کمتر'},
+ parks:{n:'فضای سبز',i:'🌳',cost:60,max:6,maint:0.5,desc:'کاهش آلودگی و افزایش رضایت'},
+ warning:{n:'سامانه هشدار زودهنگام',i:'📡',cost:90,max:1,maint:1,desc:'پیش‌بینی ۳ مرحله‌ای + ۳۰٪ کوتاه‌تر شدن حوادث'}
+};
+const PANES={energy:['solar','wind','battery','efficiency'],traffic:['lights','bus','bike'],weather:['warning'],res:['wtp','reservoir','recycling','parks']};
+
+const WEATHER={
+ clear:{n:'آفتابی',i:'☀️',sun:1,wind:.5,temp:0,rain:0,traf:1},
+ cloudy:{n:'ابری',i:'⛅',sun:.45,wind:.8,temp:-2,rain:0,traf:1},
+ rain:{n:'بارانی',i:'🌧️',sun:.2,wind:.9,temp:-3,rain:1,traf:1.25},
+ storm:{n:'طوفانی',i:'⛈️',sun:.1,wind:1.7,temp:-4,rain:2,traf:1.5},
+ heat:{n:'موج گرما',i:'🔥',sun:1.1,wind:.3,temp:14,rain:0,traf:1.05},
+ cold:{n:'سرمای شدید',i:'❄️',sun:.7,wind:.6,temp:-14,rain:0,traf:1.15},
+ windy:{n:'بادی',i:'🌬️',sun:.8,wind:1.5,temp:-1,rain:0,traf:1}
+};
+const NEXT={
+ clear:{clear:.35,cloudy:.3,heat:.1,windy:.15,cold:.1},
+ cloudy:{clear:.3,cloudy:.2,rain:.35,windy:.1,cold:.05},
+ rain:{cloudy:.4,rain:.2,storm:.2,clear:.2},
+ storm:{rain:.5,cloudy:.4,windy:.1},
+ heat:{clear:.5,cloudy:.3,storm:.2},
+ cold:{clear:.4,cloudy:.4,rain:.2},
+ windy:{clear:.4,cloudy:.3,storm:.15,rain:.15}
+};
+const EVENTS=[
+ {id:'accident',n:'تصادف زنجیره‌ای',i:'🚧',dur:[120,240],msg:'ظرفیت معابر ۳۰٪ کم شد'},
+ {id:'festival',n:'جشنواره شهری',i:'🎉',dur:[300,480],msg:'سفرها و مصرف برق بالا رفت'},
+ {id:'turbine',n:'خرابی توربین‌های بادی',i:'🛠️',dur:[360,600],msg:'تولید بادی صفر شد'},
+ {id:'leak',n:'ترکیدگی خط اصلی آب',i:'💧',dur:[240,420],msg:'هدررفت آب و مصرف بیشتر'},
+ {id:'gascut',n:'کمبود سوخت نیروگاه',i:'⛽',dur:[480,720],msg:'ظرفیت گاز ۴۰٪ کم شد'},
+ {id:'cyber',n:'حمله سایبری به چراغ‌ها',i:'🛡️',dur:[240,360],msg:'چراغ‌های هوشمند از کار افتادند'},
+ {id:'grant',n:'کمک مالی ملی',i:'🎁',instant:true},
+ {id:'migrants',n:'موج مهاجرت',i:'🏘️',instant:true}
+];
+const EV={};EVENTS.forEach(e=>EV[e.id]=e);
+
+/* ============ وضعیت ============ */
+let S;
+function newState(){
+  const s={
+    min:6*60,day:1,speed:0,started:false,over:false,reported:false,sandbox:false,
+    budget:2500,pop:250000,
+    solar:4,wind:3,battery:2,efficiency:0,lights:0,bus:4,bike:2,wtp:2,reservoir:1,recycling:0,parks:2,warning:0,
+    gasCap:300,gasAuto:true,gasPct:55,tariff:50,toll:false,remote:false,rationing:0,
+    batMWh:100,water:900,pol:40,happy:72,cong:35,blk:0,windN:0,lowH:0,seed:0,cool:0,
+    temp:16,weather:{type:'clear',left:480},forecast:[],events:[],log:[],hist:[],histAcc:0,
+    netEMA:0,today:{rev:0,exp:0},yest:{rev:0,exp:0},
+    st:{renew:0,tot:0,blackH:0,hapSum:0,hours:0},
+    m:{demand:300,solar:0,wind:0,gas:0,renew:0,dis:0,chg:0,unmet:0,curtail:0,served:300,blackout:0,cars:0,transit:.3,cap:100,load:.5,cons:4,prod:3.2,inflow:0,sunF:0,netW:0,trips:0}
+  };
+  return s;
+}
+S=newState();
+let logDirty=true;
+function log(msg,type){S.log.unshift({t:'روز '+fa(S.day)+' · '+fmtTime(S.min),msg,type:type||'info'});if(S.log.length>60)S.log.pop();logDirty=true;}
+const ev=id=>S.events.some(e=>e.id===id);
+const hourOf=()=>(S.min%1440)/60;
+const waterCap=()=>1000+S.reservoir*600;
+const batCap=()=>S.battery*100;
+const price=k=>Math.round(ITEMS[k].cost*(1+0.08*S[k]));
+const maintDay=()=>{let t=30;for(const k in ITEMS)t+=ITEMS[k].maint*S[k];return t;};
+
+/* ============ آب‌وهوا ============ */
+function pickWeather(from){const tbl=NEXT[from];let r=Math.random(),a=0;for(const k in tbl){a+=tbl[k];if(r<=a)return k;}return 'clear';}
+function genForecast(){let last=S.forecast.length?S.forecast[S.forecast.length-1].type:S.weather.type;while(S.forecast.length<3){const t=pickWeather(last);S.forecast.push({type:t,dur:Math.round(rnd(240,840))});last=t;}}
+function nextWeather(){
+  const n=S.forecast.shift();genForecast();
+  S.weather={type:n.type,left:n.dur};
+  const w=WEATHER[n.type];
+  log(w.i+' وضعیت هوا: '+w.n,['storm','heat','cold'].includes(n.type)?'warn':'info');
+}
+function spawnEvent(){
+  const pool=EVENTS.filter(e=>!ev(e.id));
+  const e=pool[Math.floor(Math.random()*pool.length)];
+  if(!e)return;
+  if(e.instant){
+    if(e.id==='grant'){S.budget+=150;log('🎁 کمک مالی ملی: ۱۵۰ م$ به بودجه افزوده شد','good');}
+    else{S.pop*=1.03;log('🏘️ موج مهاجرت: جمعیت ۳٪ زیاد شد (مصرف هم بالا می‌رود)','warn');}
+    return;
+  }
+  const dur=Math.round(rnd(e.dur[0],e.dur[1])*(S.warning?0.7:1));
+  S.events.push({id:e.id,left:dur});
+  if(e.id==='leak')S.water=Math.max(0,S.water-60);
+  log(e.i+' '+e.n+' — '+e.msg,'bad');
+}
+
+/* ============ هسته شبیه‌سازی ============ */
+const tripCurve=h=>0.25+0.75*Math.max(gauss(h,8,1.3),gauss(h,17.5,1.6))+0.25*gauss(h,13,2.5);
+const demandCurve=h=>0.65+0.28*gauss(h,8.5,2)+0.35*gauss(h,19.5,2.5);
+const waterCurve=h=>0.6+0.5*gauss(h,7.5,1.5)+0.6*gauss(h,19,2);
+const sunCurve=h=>Math.max(0,Math.sin(Math.PI*(h-6)/12));
+
+function tick(m){
+  const h=m/60;
+  S.min+=m;
+  const hr=hourOf();
+  const dayNow=Math.floor(S.min/1440)+1;
+  // هوا
+  S.weather.left-=m;
+  if(S.weather.left<=0)nextWeather();
+  const W=WEATHER[S.weather.type];
+  // رویدادها
+  S.events.forEach(e=>e.left-=m);
+  const ended=S.events.filter(e=>e.left<=0);
+  S.events=S.events.filter(e=>e.left>0);
+  ended.forEach(e=>log('✔️ پایان: '+EV[e.id].n,'info'));
+  if(S.day>=2&&Math.random()<m/(60*34))spawnEvent();
+  if(S.seed>0)S.seed-=m;
+  if(S.cool>0)S.cool-=m;
+  // دما
+  const tt=16+6*Math.sin(2*Math.PI*(hr-9)/24)+W.temp;
+  S.temp=lerp(S.temp,tt,0.25);
+  S.windN=clamp(S.windN+rnd(-.08,.08),-.25,.25);
+
+  /* --- انرژی --- */
+  const M=S.m;
+  const sunF=sunCurve(hr)*W.sun;
+  const solarMW=S.solar*20*clamp(sunF,0,1.1);
+  let windF=S.weather.type==='storm'?0.25:clamp(W.wind+S.windN,0,1);
+  const windMW=ev('turbine')?0:S.wind*14*windF;
+  const tMul=S.temp>26?1+(S.temp-26)*0.025:(S.temp<8?1+(8-S.temp)*0.02:1);
+  const demand=S.pop*0.0012*demandCurve(hr)*tMul*(1-0.06*S.efficiency)*(ev('festival')?1.12:1)+S.wtp*3;
+  const renew=solarMW+windMW;
+  const gasCapEff=S.gasCap*(ev('gascut')?0.6:1);
+  const cap=batCap();
+  const batPow=S.battery*50;
+  let gas;
+  if(S.gasAuto){
+    const need=demand-renew;
+    const peak=(hr>=17&&hr<22)||(hr>=7&&hr<10);
+    if(need>0){
+      const allowed=(peak||S.batMWh>0.6*cap)?Math.min(batPow,S.batMWh/h):0;
+      gas=clamp(need-allowed,0,gasCapEff);
+      if(!peak&&cap>0&&S.batMWh<0.85*cap&&gas<gasCapEff){
+        gas+=Math.min(batPow*0.6,gasCapEff-gas,Math.max(0,(0.85*cap-S.batMWh)/h));
+      }
+    }else gas=0;
+  }else gas=gasCapEff*S.gasPct/100;
+  let bal=renew+gas-demand,dis=0,chg=0,unmet=0,curtail=0;
+  if(bal>=0){
+    const room=Math.max(0,(cap-S.batMWh)/h/0.92);
+    chg=Math.min(bal,batPow,room);
+    S.batMWh+=chg*0.92*h;
+    curtail=bal-chg;
+  }else{
+    dis=Math.min(-bal,batPow,S.batMWh/h);
+    S.batMWh-=dis*h;
+    unmet=-bal-dis;
+  }
+  S.batMWh=clamp(S.batMWh,0,cap);
+  const blackout=demand>0?clamp(unmet/demand,0,1):0;
+  const served=demand-unmet;
+  Object.assign(M,{demand,solar:solarMW,wind:windMW,gas,renew,dis,chg,unmet,curtail,served,blackout,sunF});
+  S.st.renew+=Math.max(0,renew-curtail)*h;
+  S.st.tot+=served*h;
+  if(blackout>0.02)S.st.blackH+=h;
+
+  /* --- ترافیک --- */
+  const lv=ev('cyber')?0:S.lights;
+  const trips=S.pop*0.00045*tripCurve(hr)*(ev('festival')?1.3:1)*(S.remote?0.88:1);
+  const transit=clamp(0.12+S.bus*0.035+S.bike*0.02+(S.toll?0.08:0),0,0.65);
+  const cars=trips*(1-transit)*(S.toll?0.88:1);
+  const capT=100*(1+0.18*lv)*(ev('accident')?0.7:1)/W.traf;
+  const load=cars/capT;
+  S.cong=lerp(S.cong,clamp(load*80,0,100),0.35);
+  Object.assign(M,{trips,cars,transit,cap:capT,load});
+
+  /* --- آب --- */
+  const wcap=waterCap();
+  const prod=S.wtp*1.6*(blackout>0.3?0.5:1);
+  const cons=S.pop*1.6e-5*waterCurve(hr)*(1+Math.max(0,S.temp-28)*0.03)*(1-0.12*S.rationing)*(1-0.06*S.recycling)*(ev('leak')?1.3:1);
+  const inflow=W.rain*3+(S.seed>0?2.5:0);
+  const evap=Math.max(0,S.temp-20)*0.03;
+  const netW=prod+inflow-cons-evap;
+  S.water=clamp(S.water+netW*h,0,wcap);
+  Object.assign(M,{prod,cons,inflow,netW});
+
+  /* --- آلودگی --- */
+  const polT=clamp(8+(gas/300)*34+(cars/100)*24-S.parks*2-S.recycling*1.5-S.bike*0.5-(W.rain>0?8:0)+(S.weather.type==='heat'?5:0),0,100);
+  S.pol=lerp(S.pol,polT,0.08);
+
+  /* --- رضایت --- */
+  S.blk=lerp(S.blk,blackout,0.4);
+  const wr=S.water/wcap;
+  let hT=94-Math.min(48,S.blk*260)-Math.max(0,S.cong-35)*0.6-Math.max(0,S.pol-30)*0.7;
+  if(wr<0.15)hT-=(0.15-wr)*220;
+  if(S.water<=1)hT-=18;
+  hT-=S.tariff>50?(S.tariff-50)*0.3:-(50-S.tariff)*0.08;
+  hT-=S.rationing*3.5+(S.toll?4:0)-(S.remote?2:0);
+  hT+=S.parks*1.2+S.bike*0.4+(ev('festival')?5:0);
+  S.happy=lerp(S.happy,clamp(hT,0,100),0.035);
+  S.st.hapSum+=S.happy*h;S.st.hours+=h;
+
+  /* --- مالی --- */
+  const elecPrice=0.002+S.tariff*0.00006;
+  const rev=served*elecPrice*h
+    +S.pop*0.000012*h*(0.55+S.happy/222)*(1-clamp(blackout*3,0,0.6))*(S.remote?0.97:1)
+    +(S.toll?cars*0.012*h:0);
+  const exp=gas*0.0025*h+maintDay()/24*h;
+  S.budget+=rev-exp;
+  S.today.rev+=rev;S.today.exp+=exp;
+  S.netEMA=lerp(S.netEMA,(rev-exp)/h,0.05);
+
+  /* --- تاریخچه --- */
+  S.histAcc+=m;
+  if(S.histAcc>=30){
+    S.histAcc=0;
+    S.hist.push({d:demand,r:renew,g:gas,u:unmet,c:S.cong,p:S.pol,h:S.happy,w:wr*100});
+    if(S.hist.length>96)S.hist.shift();
+  }
+
+  if(dayNow>S.day)newDay(dayNow);
+
+  /* --- شرایط پایان --- */
+  if(!S.over){
+    if(S.budget<-300)endGame('ورشکستگی','بودجه شهر از حد مجاز بدهی گذشت و شهرداری ورشکسته شد.');
+    if(S.happy<15)S.lowH+=h;else S.lowH=Math.max(0,S.lowH-h);
+    if(S.lowH>=48)endGame('شورش شهروندان','نارضایتی عمومی بیش از دو روز ادامه داشت و شهروندان شهردار را برکنار کردند.');
+  }
+}
+
+function newDay(d){
+  S.day=d;
+  S.yest=S.today;S.today={rev:0,exp:0};
+  if(S.happy>72){S.pop*=1.007;}else if(S.happy<45){S.pop*=0.988;}
+  log('📅 روز '+fa(d)+' آغاز شد — سود دیروز: '+(S.yest.rev-S.yest.exp>=0?'+':'')+f0(S.yest.rev-S.yest.exp)+' م$','info');
+  if(d>=31&&!S.reported&&!S.over){S.reported=true;showReport();}
+}
+
+/* ============ ساخت‌وساز و کنترل‌ها ============ */
+function buy(k){
+  const it=ITEMS[k];
+  if(S.over||S[k]>=it.max)return;
+  const p=price(k);
+  if(S.budget<p)return;
+  S.budget-=p;S[k]++;
+  if(k==='battery')S.batMWh+=50;
+  log(it.i+' '+it.n+' ساخته شد ('+f0(p)+' م$)','good');
+  updateUI(true);
+}
+function seedClouds(){
+  if(S.over||S.cool>0||S.budget<25)return;
+  S.budget-=25;S.seed=480;S.cool=720;
+  if(S.weather.type==='cloudy'){S.weather={type:'rain',left:360};}
+  log('☁️ بارورسازی ابرها انجام شد؛ بارش مصنوعی به‌مدت ۸ ساعت','info');
+  updateUI(true);
+}
+function setLab(t){
+  if(S.over)return;
+  S.sandbox=true;S.weather={type:t,left:720};
+  log('🧪 سناریوی آزمایشی: '+WEATHER[t].i+' '+WEATHER[t].n,'warn');
+  updateUI(true);
+}
+
+/* ============ مودال ============ */
+function showModal(html,btns){
+  const box=$('#modalBox');
+  box.innerHTML=html+'<div class="btns">'+btns.map((b,i)=>'<button data-mb="'+i+'" class="'+(b.sec?'sec':'')+'">'+b.t+'</button>').join('')+'</div>';
+  $('#modal').classList.add('on');
+  box.querySelectorAll('[data-mb]').forEach(el=>el.addEventListener('click',()=>{$('#modal').classList.remove('on');const b=btns[+el.dataset.mb];if(b.fn)b.fn();}));
+}
+function helpHTML(){return '<h2>🏙️ به savyron City خوش آمدید</h2><p>شما شهردار یک شهر ۲۵۰ هزار نفره هستید. <b>۳۰ روز</b> فرصت دارید شهر را پایدار، پاک و راضی نگه دارید.</p><ul><li>⚡ <b>انرژی:</b> برق را بین خورشید، باد، گاز و باتری متعادل کنید. کمبود برق = خاموشی و نارضایتی.</li><li>🚦 <b>ترافیک:</b> با خط اتوبوس، چراغ هوشمند، دوچرخه و عوارض ازدحام را کم کنید.</li><li>🌦️ <b>آب‌وهوا:</b> هوا بر تولید برق، مصرف، ترافیک و آب اثر می‌گذارد؛ پیش‌بینی را دنبال کنید.</li><li>💧 <b>منابع:</b> ذخیره آب، بودجه و آلودگی را مدیریت کنید.</li></ul><p>شکست: بدهی بیش از ۳۰۰ م$ یا رضایت زیر ۱۵٪ برای ۲ روز. میانبرها: <b>فاصله</b> = توقف، <b>۱ ۲ ۳</b> = سرعت.</p>';}
+function showHelp(){const was=S.speed;S.speed=0;syncSpeed();showModal(helpHTML(),[{t:S.started?'ادامه':'شروع بازی',fn:()=>{S.started=true;S.speed=was||1;syncSpeed();}}]);}
+
+function score(){
+  const avgH=S.st.hours?S.st.hapSum/S.st.hours:S.happy;
+  const rs=S.st.tot?S.st.renew/S.st.tot:0;
+  const sc=Math.round(avgH*8+Math.max(0,S.budget)/8+(100-S.pol)*4+S.pop/1000*1.2+rs*300-S.st.blackH*4);
+  const grade=sc>=1900?'S':sc>=1500?'A':sc>=1100?'B':sc>=700?'C':'D';
+  return {sc,grade,avgH,rs};
+}
+function statsHTML(r){return '<div class="kv"><span>میانگین رضایت</span><span>'+f0(r.avgH)+'٪</span><span>سهم انرژی تجدیدپذیر</span><span>'+f0(r.rs*100)+'٪</span><span>ساعت‌های خاموشی</span><span>'+f0(S.st.blackH)+'</span><span>بودجه</span><span>'+f0(S.budget)+' م$</span><span>جمعیت</span><span>'+fa(Math.round(S.pop))+'</span><span>شاخص آلودگی</span><span>'+f0(S.pol)+'٪</span></div>';}
+function showReport(){
+  const r=score();S.speed=0;syncSpeed();
+  showModal('<h2>📊 گزارش پایان ۳۰ روز</h2><div class="grade">'+(S.sandbox?'(آزمایشی) ':'')+r.grade+'</div><p>امتیاز: <b>'+f0(r.sc)+'</b></p>'+statsHTML(r),
+    [{t:'ادامه مدیریت شهر',fn:()=>{S.speed=1;syncSpeed();}},{t:'شروع دوباره',sec:true,fn:resetGame}]);
+}
+function endGame(title,why){
+  if(S.over)return;S.over=true;S.speed=0;syncSpeed();
+  showModal('<h2>💥 پایان بازی: '+title+'</h2><p>'+why+'</p>'+statsHTML(score()),[{t:'شروع دوباره',fn:resetGame}]);
+}
+function resetGame(){
+  S=newState();genForecast();S.started=true;S.speed=1;
+  log('🏙️ بازی تازه آغاز شد. موفق باشید!','good');
+  initFx();updateUI(true);syncSpeed();
+}
+
+/* ============ رابط کاربری ============ */
+const KPIS=[['bud','💰','بودجه'],['pop','👥','جمعیت'],['hap','😊','رضایت شهروندان'],['pow','⚡','تراز برق'],['trf','🚗','ترافیک'],['wat','💧','ذخیره آب'],['pol','🌫️','آلودگی هوا'],['bat','🔋','باتری']];
+function buildUI(){
+  $('#kpis').innerHTML=KPIS.map(k=>'<div class="kpi"><div class="l">'+k[1]+' '+k[2]+'</div><div class="v" id="k_'+k[0]+'_v">—</div><div class="bar"><i id="k_'+k[0]+'_b"></i></div><div class="s" id="k_'+k[0]+'_s"></div></div>').join('');
+  for(const p in PANES){
+    $('#bl_'+p).innerHTML=PANES[p].map(k=>{const it=ITEMS[k];return '<div class="bld"><div class="ic">'+it.i+'</div><div><div class="nm">'+it.n+' <span class="cnt" id="c_'+k+'"></span></div><div class="ds">'+it.desc+'</div><div class="pips" id="pp_'+k+'"></div></div><button class="buy" data-buy="'+k+'" id="b_'+k+'"></button></div>';}).join('');
+  }
+  $('#lab').innerHTML=Object.keys(WEATHER).map(k=>'<button data-lab="'+k+'" title="'+WEATHER[k].n+'"><span class="ei">'+WEATHER[k].i+'</span>'+WEATHER[k].n+'</button>').join('');
+}
+function setK(id,v,pct,color,sub){
+  $('#k_'+id+'_v').textContent=v;
+  const b=$('#k_'+id+'_b');b.style.width=clamp(pct,0,100)+'%';b.style.background=color;
+  $('#k_'+id+'_s').textContent=sub;
+}
+const C_GOOD='#3ddc97',C_WARN='#ffb703',C_BAD='#ff5d6c';
+const goodHigh=p=>p>=60?C_GOOD:p>=35?C_WARN:C_BAD;
+const goodLow=p=>p<=40?C_GOOD:p<=65?C_WARN:C_BAD;
+
+let lastUI=0;
+function updateUI(force){
+  const now=performance.now();
+  if(!force&&now-lastUI<200)return;
+  lastUI=now;
+  const M=S.m,W=WEATHER[S.weather.type],wcap=waterCap(),cap=batCap();
+  $('#hTime').textContent='🕒 '+fmtTime(S.min);
+  $('#hDay').textContent='📅 روز '+fa(Math.min(S.day,999))+(S.day<=30?' از ۳۰':' (ادامه)');
+  $('#hWeather').textContent=W.i+' '+W.n;
+  $('#hTemp').textContent='🌡️ '+f0(S.temp)+'°C';
+  $('#hSand').style.display=S.sandbox?'flex':'none';
+  // KPI
+  const net=S.netEMA*24;
+  setK('bud',f0(S.budget)+' م$',S.budget/30,S.budget<0?C_BAD:S.budget<300?C_WARN:C_GOOD,'روزانه '+(net>=0?'+':'')+f0(net)+' م$');
+  setK('pop',fa(Math.round(S.pop)),S.pop/4000,C_GOOD,S.happy>72?'در حال رشد':S.happy<45?'در حال کاهش':'پایدار');
+  setK('hap',f0(S.happy)+'٪',S.happy,goodHigh(S.happy),S.happy>=70?'راضی':S.happy>=45?'نگران':'ناراضی');
+  setK('pow',f0(M.demand)+' MW',M.demand?M.served/M.demand*100:100,M.blackout>0.02?C_BAD:C_GOOD,M.blackout>0.02?'خاموشی '+f0(M.blackout*100)+'٪':'تأمین پایدار');
+  setK('trf',f0(S.cong)+'٪',S.cong,goodLow(S.cong),'حمل‌ونقل عمومی '+f0(M.transit*100)+'٪');
+  const wp=S.water/wcap*100;
+  setK('wat',f0(wp)+'٪',wp,goodHigh(wp),f1(M.netW)+' در ساعت');
+  setK('pol',f0(S.pol)+'٪',S.pol,goodLow(S.pol),S.pol<30?'پاک':S.pol<50?'متوسط':S.pol<70?'ناسالم':'خطرناک');
+  const sp=cap?S.batMWh/cap*100:0;
+  setK('bat',cap?f0(sp)+'٪':'—',sp,goodHigh(sp),cap?(M.chg>1?'در حال شارژ ':M.dis>1?'در حال دشارژ ':'آماده ')+f0(S.batMWh)+'/'+f0(cap)+' MWh':'باتری ندارید');
+  // انرژی
+  $('#sw_gasAuto').classList.toggle('on',S.gasAuto);
+  const gp=$('#gasPct');gp.disabled=S.gasAuto;if(document.activeElement!==gp)gp.value=S.gasPct;
+  $('#gasInfo').textContent='خروجی: '+f0(M.gas)+' از '+f0(S.gasCap*(ev('gascut')?0.6:1))+' مگاوات'+(S.gasAuto?' (تنظیم خودکار با باتری)':' ('+f0(S.gasPct)+'٪ دستی)');
+  const tr=$('#tariff');if(document.activeElement!==tr)tr.value=S.tariff;
+  $('#tarInfo').textContent=S.tariff<40?'ارزان':S.tariff<=60?'متعادل':'گران';
+  const tot=M.solar+M.wind+M.gas+M.dis||1;
+  $('#mix').innerHTML='<i style="width:'+M.solar/tot*100+'%;background:#ffd166"></i><i style="width:'+M.wind/tot*100+'%;background:#7bdff2"></i><i style="width:'+M.gas/tot*100+'%;background:#ff8c42"></i><i style="width:'+M.dis/tot*100+'%;background:#3ddc97"></i>';
+  $('#enKv').innerHTML='<span>خورشید</span><span>'+f0(M.solar)+' MW</span><span>باد</span><span>'+f0(M.wind)+' MW</span><span>گاز</span><span>'+f0(M.gas)+' MW</span><span>هدررفت مازاد</span><span>'+f0(M.curtail)+' MW</span><span>سهم تجدیدپذیر</span><span>'+f0(M.served?Math.max(0,M.renew-M.curtail)/M.served*100:0)+'٪</span>';
+  // ترافیک
+  $('#sw_toll').classList.toggle('on',S.toll);$('#sw_remote').classList.toggle('on',S.remote);
+  $('#trKv').innerHTML='<span>ظرفیت معابر</span><span>'+f0(M.cap)+'</span><span>خودروهای در حرکت</span><span>'+f0(M.cars)+'</span><span>بار شبکه</span><span>'+f0(M.load*100)+'٪</span><span>حمل‌ونقل عمومی</span><span>'+f0(M.transit*100)+'٪</span><span>چراغ هوشمند</span><span>سطح '+fa(ev('cyber')?0:S.lights)+(ev('cyber')?' (هک شده)':'')+'</span>';
+  // آب‌وهوا
+  $('#wxIcon').textContent=W.i;$('#wxName').textContent=W.n;
+  $('#wxInfo').textContent='دما '+f0(S.temp)+'°C · تابش '+f0(M.sunF*100)+'٪ · باد '+f0((S.weather.type==='storm'?0.25:clamp(W.wind,0,1))*100)+'٪ · '+f0(S.weather.left/60)+' ساعت دیگر';
+  const nf=S.warning?3:1;
+  $('#forecast').innerHTML=S.forecast.slice(0,nf).map(f=>'<span>'+WEATHER[f.type].i+' '+WEATHER[f.type].n+' ('+f0(f.dur/60)+' ساعت)</span>').join('')+(S.warning?'':'<span class="mut">برای پیش‌بینی بیشتر سامانه هشدار بسازید</span>');
+  const sb=$('#seedBtn');sb.disabled=S.cool>0||S.budget<25||S.over;
+  const st=S.cool>0?'⏳ آماده بعد از '+f0(S.cool/60)+' ساعت':'☁️ اجرا · ۲۵ م$';if(sb.dataset.t!==st){sb.textContent=st;sb.dataset.t=st;}sb.classList.toggle('can',!sb.disabled);
+  // منابع
+  $('#ratInfo').textContent='-'+f0(S.rationing*12)+'٪ مصرف';
+  document.querySelectorAll('[data-rat]').forEach(b=>b.classList.toggle('on',+b.dataset.rat===S.rationing));
+  document.querySelectorAll('[data-lab]').forEach(b=>b.classList.toggle('on',b.dataset.lab===S.weather.type));
+  $('#finKv').innerHTML='<span>درآمد</span><span>'+f0(S.today.rev)+' م$</span><span>هزینه</span><span>'+f0(S.today.exp)+' م$</span><span>نگهداری روزانه</span><span>'+f0(maintDay())+' م$</span><span>مصرف آب</span><span>'+f1(M.cons)+' /ساعت</span><span>تولید آب</span><span>'+f1(M.prod)+' /ساعت</span><span>ورودی باران</span><span>'+f1(M.inflow)+' /ساعت</span><span>ظرفیت مخزن</span><span>'+f0(wcap)+'</span>';
+  // خرید
+  for(const k in ITEMS){
+    const it=ITEMS[k],c=$('#c_'+k),b=$('#b_'+k);if(!c)continue;
+    c.textContent='('+f0(S[k])+' از '+f0(it.max)+')';
+    let bt;
+    if(S[k]>=it.max){bt='✓ تکمیل شد';b.disabled=true;}
+    else{const p=price(k);bt='＋ خرید · '+f0(p)+' م$';b.disabled=S.budget<p||S.over;}
+    if(b.dataset.t!==bt){b.textContent=bt;b.dataset.t=bt;}
+    b.classList.toggle('can',!b.disabled);
+    const pp=$('#pp_'+k);
+    if(pp){const pk=S[k]+'/'+it.max;if(pp.dataset.t!==pk){pp.dataset.t=pk;let h='';for(let q=0;q<it.max;q++)h+='<i class="'+(q<S[k]?'f':'')+'"></i>';pp.innerHTML=h;}}
+  }
+  // رویدادها
+  $('#evbar').innerHTML=S.events.map(e=>'<span>'+EV[e.id].i+' '+EV[e.id].n+' · '+f0(e.left/60)+'س</span>').join('');
+  // مشاور
+  const adv=advise();
+  $('#advice').innerHTML=adv.map(a=>'<div class="'+a[0]+'">'+a[1]+'</div>').join('');
+  if(logDirty){$('#logbox').innerHTML=S.log.slice(0,25).map(l=>'<div class="'+l.type+'"><time>'+l.t+'</time>'+l.msg+'</div>').join('');logDirty=false;}
+}
+function advise(){
+  const a=[],M=S.m,wp=S.water/waterCap();
+  if(M.blackout>0.02)a.push(['bad','⚡ کمبود برق! خروجی گاز را بالا ببرید یا باتری و تولید تجدیدپذیر اضافه کنید.']);
+  if(wp<0.25)a.push(['bad','💧 ذخیره آب رو به پایان است؛ جیره‌بندی، تصفیه‌خانه، مخزن یا بارورسازی ابرها.']);
+  if(S.budget<150)a.push(['bad','💰 بودجه کم است؛ تعرفه را کمی بالا ببرید یا هزینه‌ها را کم کنید.']);
+  if(S.cong>65)a.push(['warn','🚗 ترافیک سنگین است؛ خط اتوبوس، چراغ هوشمند، عوارض یا دورکاری کمک می‌کند.']);
+  if(S.pol>55)a.push(['warn','🌫️ آلودگی بالاست؛ سهم گاز را کم کنید و فضای سبز/دوچرخه بسازید.']);
+  const nx=S.forecast[0]?S.forecast[0].type:null;
+  if(S.warning||true){
+    if(nx==='storm')a.push(['warn','⛈️ طوفان در راه است: توربین‌ها خاموش می‌شوند؛ باتری را شارژ نگه دارید.']);
+    if(nx==='heat')a.push(['warn','🔥 موج گرما در راه است: مصرف برق و آب بالا می‌رود.']);
+    if(nx==='cold')a.push(['warn','❄️ سرمای شدید در راه است: مصرف برق افزایش می‌یابد.']);
+  }
+  if(M.curtail>20&&batCap()<600)a.push(['info','🔋 انرژی تجدیدپذیر هدر می‌رود؛ باتری بیشتر بسازید.']);
+  if(S.budget>900)a.push(['info','🏗️ بودجه خوبی دارید؛ در زیرساخت سرمایه‌گذاری کنید.']);
+  if(S.happy<50)a.push(['warn','😟 رضایت پایین است؛ ریشه‌اش را در شاخص‌های بالا (ترافیک، آلودگی، خاموشی) پیدا کنید.']);
+  if(!a.length)a.push(['good','✅ همه‌چیز پایدار است. فرصت خوبی برای سرمایه‌گذاری بلندمدت است.']);
+  return a.slice(0,4);
+}
+
+/* ============ نمودارها ============ */
+function drawChart(cv,series,maxV){
+  const dpr=window.devicePixelRatio||1,w=cv.clientWidth,h=cv.clientHeight;
+  if(!w||!h)return;
+  if(cv.width!==Math.round(w*dpr)){cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);}
+  const c=cv.getContext('2d');c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,w,h);
+  c.strokeStyle='rgba(255,255,255,.07)';c.lineWidth=1;
+  for(let i=0;i<=4;i++){const y=6+(h-12)*i/4;c.beginPath();c.moveTo(0,y);c.lineTo(w,y);c.stroke();}
+  for(const s of series){
+    if(s.data.length<2)continue;
+    c.strokeStyle=s.color;c.lineWidth=2;c.beginPath();
+    s.data.forEach((v,i)=>{const x=i/(s.data.length-1)*w,y=h-6-clamp(v/maxV,0,1)*(h-12);if(i)c.lineTo(x,y);else c.moveTo(x,y);});
+    c.stroke();
+  }
+}
+let lastChart=0;
+function updateCharts(){
+  const now=performance.now();if(now-lastChart<800)return;lastChart=now;
+  const H=S.hist;
+  const maxE=Math.max(100,...H.map(x=>Math.max(x.d,x.r+x.g)))*1.1;
+  drawChart($('#ch1'),[{data:H.map(x=>x.d),color:'#ffffff'},{data:H.map(x=>x.r),color:'#3ddc97'},{data:H.map(x=>x.g),color:'#ff8c42'},{data:H.map(x=>x.u),color:'#ff5d6c'}],maxE);
+  drawChart($('#ch2'),[{data:H.map(x=>x.h),color:'#4cc9f0'},{data:H.map(x=>x.c),color:'#ffb703'},{data:H.map(x=>x.p),color:'#b388ff'},{data:H.map(x=>x.w),color:'#2f8fd0'}],100);
+}
+
+/* ============ گرافیک شهر ============ */
+const CW=960,CH=600,COLS=6,ROWS=4,CELLW=160,CELLH=150,RW=20;
+const MAP=[
+ ['wind','wind','res','comm','res','solar'],
+ ['res','res','comm','comm','res','solar'],
+ ['park','res','comm','res','sub','gas'],
+ ['lake','wtp','res','res','park','gas']
+];
+const cv=$('#city');
+const K=Math.min(2,window.devicePixelRatio||1);
+cv.width=CW*K;cv.height=CH*K;
+const cc=cv.getContext('2d');
+cc.scale(K,K);
+let blocks=[],cars=[],smoke=[],drops=[],clouds=[],windAng=0,flash=0,tReal=0;
+const CARCOLS=['#ff6b6b','#4dabf7','#ffd43b','#69db7c','#e599f7','#f8f9fa','#ffa94d','#74c0fc'];
+
+function seeded(seed){let s=seed;return()=>{s=(s*16807)%2147483647;return(s-1)/2147483646;};}
+function buildCity(){
+  blocks=[];
+  for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){
+    const type=MAP[r][c];
+    const b={r,c,type,id:r*COLS+c,ix:c*CELLW+RW/2+2,iy:r*CELLH+RW/2+2,iw:CELLW-RW-4,ih:CELLH-RW-4,bl:[]};
+    const R=seeded(r*31+c*17+7);
+    if(type==='res'||type==='comm'){
+      for(let k=0;k<2;k++)for(let j=0;j<3;j++){
+        const w=32+R()*6,d=22+R()*4;
+        const hgt=type==='comm'?(k===0?26+R()*14:16+R()*14):(10+R()*12);
+        const third=(b.iw-8)/3;
+        b.bl.push({x:b.ix+4+j*third+third/2-w/2,y:b.iy+44+k*50,w,d,h:hgt,hue:type==='comm'?205+R()*20:25+R()*25,seed:Math.floor(R()*100)});
+      }
+    }
+    blocks.push(b);
+  }
+}
+function initCars(){
+  cars=[];
+  for(let i=0;i<90;i++){
+    const axis=Math.random()<.55?'h':'v';
+    const line=axis==='h'?Math.floor(Math.random()*(ROWS+1)):Math.floor(Math.random()*(COLS+1));
+    cars.push({axis,line,dir:Math.random()<.5?1:-1,pos:Math.random()*(axis==='h'?CW:CH),sp:rnd(40,70),col:CARCOLS[i%CARCOLS.length],i});
+  }
+}
+function initFx(){
+  smoke=[];drops=[];clouds=[];
+  for(let i=0;i<170;i++)drops.push({x:Math.random()*CW,y:Math.random()*CH,v:rnd(.8,1.2),ph:Math.random()*6});
+  for(let i=0;i<10;i++)clouds.push({x:Math.random()*CW,y:rnd(30,CH-30),s:rnd(.8,1.5),sp:rnd(6,16),ph:Math.random()});
+}
+const roadLines=()=>{const a=[];for(let j=0;j<=ROWS;j++)a.push(['h',j]);for(let i=0;i<=COLS;i++)a.push(['v',i]);return a;};
+const blockDark=b=>S.m.blackout>0.02&&((b.id*37+11)%24)/24<Math.min(1,S.m.blackout*5);
+
+function dashRect(c,x,y,w,h){c.save();c.setLineDash([4,4]);c.strokeStyle='rgba(255,255,255,.28)';c.lineWidth=1;c.strokeRect(x,y,w,h);c.restore();}
+function dashCircle(c,x,y,r){c.save();c.setLineDash([3,3]);c.strokeStyle='rgba(255,255,255,.3)';c.lineWidth=1;c.beginPath();c.arc(x,y,r,0,7);c.stroke();c.restore();}
+function ellipse(c,x,y,rx,ry){c.beginPath();c.ellipse(x,y,rx,ry,0,0,Math.PI*2);c.fill();}
+
+function drawBld(c,b,night){
+  const roofY=b.y-b.h;
+  c.fillStyle='rgba(0,0,0,.22)';c.fillRect(b.x+5,b.y+b.d-1,b.w,6);
+  c.fillStyle='hsl('+b.hue+',22%,'+(night?30:46)+'%)';c.fillRect(b.x,roofY+b.d,b.w,b.h);
+  c.fillStyle='hsl('+b.hue+',20%,'+(night?38:62)+'%)';c.fillRect(b.x,roofY,b.w,b.d);
+  const cols=Math.floor(b.w/8),rows=Math.floor((b.h-4)/7);
+  for(let i=0;i<cols;i++)for(let j=0;j<rows;j++){
+    c.fillStyle=night?'#1a2236':'rgba(210,235,255,.55)';
+    c.fillRect(b.x+3+i*8,roofY+b.d+3+j*7,4,4);
+  }
+}
+function drawBldLights(c,b){
+  const roofY=b.y-b.h;
+  const cols=Math.floor(b.w/8),rows=Math.floor((b.h-4)/7);
+  for(let i=0;i<cols;i++)for(let j=0;j<rows;j++){
+    if((i*7+j*13+b.seed)%5===0)continue;
+    c.fillRect(b.x+3+i*8,roofY+b.d+3+j*7,4,4);
+  }
+}
+function drawSolar(c,b,base){
+  const sun=clamp(S.m.sunF,0,1);
+  for(let k=0;k<6;k++){
+    const x=b.ix+8+(k%2)*64,y=b.iy+14+Math.floor(k/2)*38,w=56,h=28;
+    if(base+k<S.solar){
+      const g=c.createLinearGradient(x,y,x+w,y+h);
+      g.addColorStop(0,'rgb('+((30+sun*50)|0)+','+((70+sun*70)|0)+','+((130+sun*70)|0)+')');
+      g.addColorStop(1,'rgb('+((20+sun*30)|0)+','+((50+sun*50)|0)+','+((100+sun*60)|0)+')');
+      c.fillStyle=g;c.fillRect(x,y,w,h);
+      c.strokeStyle='rgba(180,210,255,.45)';c.lineWidth=1;c.beginPath();
+      for(let i=1;i<4;i++){c.moveTo(x+i*w/4,y);c.lineTo(x+i*w/4,y+h);}
+      c.moveTo(x,y+h/2);c.lineTo(x+w,y+h/2);c.stroke();
+      if(sun>0.3){c.fillStyle='rgba(255,240,170,'+(sun*0.18)+')';c.fillRect(x,y,w,h/2);}
+    }else dashRect(c,x,y,w,h);
+  }
+}
+function drawWind(c,b,base){
+  const broken=ev('turbine');
+  for(let k=0;k<4;k++){
+    const x=b.ix+38+(k%2)*62,y=b.iy+58+(k>>1)*54;
+    if(base+k<S.wind){
+      c.strokeStyle=broken?'#d97b7b':'#e9eef5';c.lineWidth=3;c.beginPath();c.moveTo(x,y);c.lineTo(x,y-34);c.stroke();
+      const a=(broken||S.weather.type==='storm'?0:windAng)+k*1.7;
+      c.lineWidth=2.5;
+      for(let i=0;i<3;i++){const aa=a+i*2.094;c.beginPath();c.moveTo(x,y-34);c.lineTo(x+Math.cos(aa)*20,y-34+Math.sin(aa)*20);c.stroke();}
+      c.fillStyle='#fff';c.beginPath();c.arc(x,y-34,3,0,7);c.fill();
+    }else dashCircle(c,x,y,6);
+  }
+}
+function drawGas(c,b){
+  const on=S.m.gas>1;
+  c.fillStyle='#4d5566';c.fillRect(b.ix+8,b.iy+56,b.iw-16,56);
+  c.fillStyle='#657089';c.fillRect(b.ix+8,b.iy+40,b.iw-16,16);
+  for(let k=0;k<2;k++){
+    const sx=b.ix+30+k*60;
+    c.fillStyle='#8a93a6';c.fillRect(sx,b.iy+2,14,40);
+    c.fillStyle='#d64545';c.fillRect(sx,b.iy+8,14,5);
+  }
+  for(let i=0;i<5;i++){c.fillStyle=on?'#ffb24a':'#313a4c';c.fillRect(b.ix+16+i*22,b.iy+68,12,10);c.fillRect(b.ix+16+i*22,b.iy+88,12,10);}
+}
+function drawBattery(c,b){
+  const cap=batCap(),soc=cap?S.batMWh/cap:0;
+  for(let k=0;k<6;k++){
+    const x=b.ix+6+(k%3)*44,y=b.iy+30+Math.floor(k/3)*46,w=38,h=34;
+    if(k<S.battery){
+      c.fillStyle='#2b3a55';c.fillRect(x,y,w,h);
+      c.fillStyle=soc>.5?'#3ddc97':soc>.2?'#ffb703':'#ff5d6c';
+      const fh=(h-8)*soc;c.fillRect(x+4,y+h-4-fh,w-8,fh);
+      c.fillStyle='#9fb3d6';c.fillRect(x+w/2-5,y-4,10,4);
+    }else dashRect(c,x,y,w,h);
+  }
+  c.fillStyle='#778';c.fillRect(b.ix+b.iw/2-3,b.iy+4,6,18);
+  c.strokeStyle='#aab';c.lineWidth=2;c.beginPath();c.moveTo(b.ix+b.iw/2-16,b.iy+10);c.lineTo(b.ix+b.iw/2+16,b.iy+10);c.stroke();
+  if(S.m.chg>1||S.m.dis>1){c.fillStyle=S.m.chg>1?'#3ddc97':'#ffd166';c.beginPath();c.arc(b.ix+b.iw-10,b.iy+10,5,0,7);c.fill();}
+}
+function drawWTP(c,b){
+  c.fillStyle='#5b7a8a';c.fillRect(b.ix+6,b.iy+14,b.iw-12,34);
+  c.fillStyle='#7b9bab';c.fillRect(b.ix+6,b.iy+8,b.iw-12,8);
+  for(let k=0;k<5;k++){
+    const x=b.ix+22+k*24,y=b.iy+82;
+    if(k<S.wtp){c.fillStyle='#3fa7d6';ellipse(c,x,y,10,10);c.fillStyle='#bfe8ff';ellipse(c,x-3,y-3,3,3);}
+    else dashCircle(c,x,y,10);
+  }
+  c.strokeStyle='#3fa7d6';c.lineWidth=2;c.beginPath();c.moveTo(b.ix+10,b.iy+60);c.lineTo(b.ix+b.iw-10,b.iy+60);c.stroke();
+}
+function drawLake(c,b){
+  const ratio=S.water/waterCap(),cx=b.ix+b.iw/2,cy=b.iy+b.ih/2;
+  c.fillStyle='#6b5d4a';ellipse(c,cx,cy,64,48);
+  c.fillStyle='#1d3f5e';ellipse(c,cx,cy,58,42);
+  c.fillStyle='#2f8fd0';const s=0.3+0.7*ratio;ellipse(c,cx,cy,58*s,42*s);
+  c.fillStyle='rgba(255,255,255,.18)';ellipse(c,cx-10*s,cy-8*s,20*s,8*s);
+  for(let i=0;i<S.reservoir;i++){c.fillStyle='#9aa4b5';c.fillRect(b.ix+6+i*14,b.iy+b.ih-12,10,8);}
+}
+function drawPark(c,b,base){
+  c.strokeStyle='#d6c9a8';c.lineWidth=5;c.beginPath();c.moveTo(b.ix+4,b.iy+b.ih/2);c.bezierCurveTo(b.ix+50,b.iy+20,b.ix+90,b.iy+100,b.ix+b.iw-4,b.iy+b.ih/2);c.stroke();
+  const pos=[[34,38],[100,34],[66,98]];
+  for(let k=0;k<3;k++){
+    const x=b.ix+pos[k][0],y=b.iy+pos[k][1];
+    if(base+k<S.parks){
+      for(const o of [[-10,4,12],[10,2,11],[0,-8,13],[0,12,10]]){c.fillStyle='#2f7d3a';ellipse(c,x+o[0],y+o[1],o[2],o[2]);c.fillStyle='#46a557';ellipse(c,x+o[0]-2,y+o[1]-2,o[2]*0.6,o[2]*0.6);}
+    }else dashCircle(c,x,y,14);
+  }
+}
+const LABELS={wind:'مزرعه بادی',solar:'مزرعه خورشیدی',gas:'نیروگاه گازی',sub:'ذخیره‌ساز باتری',wtp:'تصفیه‌خانه آب',lake:'مخزن آب',park:'پارک'};
+function drawLabel(c,b){
+  const t=LABELS[b.type];if(!t)return;
+  const f=clamp(CW/(cv.clientWidth||CW)*0.45,1,1.4);
+  c.font='600 '+(11*f)+'px Vazirmatn,Tahoma,sans-serif';c.direction='rtl';
+  const w=c.measureText(t).width+12;
+  c.fillStyle='rgba(8,14,28,.72)';
+  const hh=15*f;c.beginPath();c.roundRect?c.roundRect(b.ix+b.iw-w-4,b.iy+b.ih-hh-3,w,hh,6):c.rect(b.ix+b.iw-w-4,b.iy+b.ih-hh-3,w,hh);c.fill();
+  c.fillStyle='#e8eef9';c.textAlign='right';c.fillText(t,b.ix+b.iw-10,b.iy+b.ih-3-hh*0.27);
+}
+
+function updateFx(dt){
+  tReal+=dt;
+  const W=S.weather.type;
+  windAng+=dt*(1+clamp(WEATHER[W].wind+S.windN,0,1.7)*3.5);
+  // دود
+  const rate=(S.m.gas/300)*7;
+  for(const b of blocks)if(b.type==='gas'){
+    for(let k=0;k<2;k++){
+      if(Math.random()<rate*dt&&smoke.length<90)smoke.push({x:b.ix+37+k*60,y:b.iy+2,r:3,a:.55,vx:rnd(6,14)*(WEATHER[W].wind+.3),vy:-rnd(14,22)});
+    }
+  }
+  for(const p of smoke){p.x+=p.vx*dt;p.y+=p.vy*dt;p.r+=dt*5;p.a-=dt*.22;}
+  smoke=smoke.filter(p=>p.a>0);
+  // رعد
+  if(W==='storm'&&Math.random()<dt*0.22)flash=1;
+  flash=Math.max(0,flash-dt*3);
+}
+const ACT_DROPS={rain:90,storm:170,cold:90};
+const ACT_CLOUDS={clear:1,cloudy:8,rain:9,storm:10,heat:0,cold:5,windy:3};
+
+function drawCity(dt){
+  const c=cc;
+  const hr=hourOf();
+  const dayl=clamp(0.5+1.2*Math.sin(Math.PI*(hr-6)/12),0,1);
+  const night=1-dayl;
+  const W=S.weather.type;
+  c.fillStyle='#454b57';c.fillRect(0,0,CW,CH);
+  // لات‌ها
+  const lotCol={park:'#5f9a5a',lake:'#8fa896',solar:'#8c9c7a',wind:'#8c9c7a',gas:'#7c7f86',wtp:'#8fa6ad',sub:'#8a8f98',res:'#8fa595',comm:'#8f9aa8'};
+  for(const b of blocks){c.fillStyle=lotCol[b.type];c.fillRect(b.ix-2,b.iy-2,b.iw+4,b.ih+4);}
+  // خط وسط
+  c.save();c.setLineDash([10,10]);c.strokeStyle='rgba(255,255,255,.35)';c.lineWidth=1.5;
+  for(let j=0;j<=ROWS;j++){c.beginPath();c.moveTo(0,j*CELLH);c.lineTo(CW,j*CELLH);c.stroke();}
+  for(let i=0;i<=COLS;i++){c.beginPath();c.moveTo(i*CELLW,0);c.lineTo(i*CELLW,CH);c.stroke();}
+  c.restore();
+  // رنگ ازدحام
+  if(S.cong>40){
+    c.fillStyle='rgba(255,60,60,'+clamp((S.cong-40)/160,0,.4)+')';
+    for(let j=0;j<=ROWS;j++)c.fillRect(0,j*CELLH-RW/2,CW,RW);
+    for(let i=0;i<=COLS;i++)c.fillRect(i*CELLW-RW/2,0,RW,CH);
+  }
+  // مسیر دوچرخه
+  const rl=roadLines();
+  c.strokeStyle='#3ddc97';c.lineWidth=2;
+  for(let q=0;q<S.bike&&q<rl.length;q++){
+    const r=rl[q];c.beginPath();
+    if(r[0]==='h'){c.moveTo(0,r[1]*CELLH+10);c.lineTo(CW,r[1]*CELLH+10);}else{c.moveTo(r[1]*CELLW+10,0);c.lineTo(r[1]*CELLW+10,CH);}
+    c.stroke();
+  }
+  // بلوک‌ها
+  let sIdx=0,wIdx=0,pIdx=0;
+  for(const b of blocks){
+    if(b.type==='res'||b.type==='comm'){for(const bl of b.bl)drawBld(c,bl,night>0.4);}
+    else if(b.type==='solar'){drawSolar(c,b,sIdx);sIdx+=6;}
+    else if(b.type==='wind'){drawWind(c,b,wIdx);wIdx+=4;}
+    else if(b.type==='gas')drawGas(c,b);
+    else if(b.type==='sub')drawBattery(c,b);
+    else if(b.type==='wtp')drawWTP(c,b);
+    else if(b.type==='lake')drawLake(c,b);
+    else if(b.type==='park'){drawPark(c,b,pIdx);pIdx+=3;}
+    drawLabel(c,b);
+  }
+  // خودروها
+  const active=Math.round(10+70*clamp(S.m.load,0.05,1.2));
+  const spF=Math.max(.12,1.15-0.95*S.cong/100);
+  const green=ax=>(Math.floor(tReal/4)%2===0)===(ax==='h');
+  const nBus=Math.min(18,Math.round(S.bus*1.5));
+  for(const k of cars){
+    const isBus=k.i<nBus;
+    if(k.i<active){
+      const len=k.axis==='h'?CW:CH,cell=k.axis==='h'?CELLW:CELLH;
+      let stop=false;
+      if(!green(k.axis)){const rem=k.dir>0?cell-(k.pos%cell):(k.pos%cell);if(rem<16&&rem>6)stop=true;}
+      if(!stop)k.pos=(k.pos+k.dir*k.sp*spF*dt+len)%len;
+    }
+    if(k.i>=active)continue;
+    c.fillStyle=isBus?'#ff9f1c':k.col;
+    const L=isBus?18:11,Wd=isBus?7:6;
+    if(k.axis==='h'){c.fillRect(k.pos-L/2,k.line*CELLH+(k.dir>0?4:-9),L,Wd);}
+    else{c.fillRect(k.line*CELLW+(k.dir>0?-9:4),k.pos-L/2,Wd,L);}
+  }
+  // چراغ‌های راهنما
+  for(let j=0;j<=ROWS;j++)for(let i=0;i<=COLS;i++){
+    const x=i*CELLW,y=j*CELLH;
+    c.fillStyle=ev('cyber')?(Math.floor(tReal*3)%2?'#ff5d6c':'#222'):(green('h')?'#3ddc97':'#ff5d6c');c.beginPath();c.arc(x-12,y-12,2.6,0,7);c.fill();
+    c.fillStyle=ev('cyber')?(Math.floor(tReal*3)%2?'#222':'#ff5d6c'):(green('v')?'#3ddc97':'#ff5d6c');c.beginPath();c.arc(x+12,y+12,2.6,0,7);c.fill();
+    if(S.lights>0&&!ev('cyber')){c.strokeStyle='rgba(76,201,240,.55)';c.lineWidth=S.lights;c.beginPath();c.arc(x,y,13,0,7);c.stroke();}
+  }
+  // دود
+  for(const p of smoke){c.fillStyle='rgba(60,64,74,'+p.a+')';c.beginPath();c.arc(p.x,p.y,p.r,0,7);c.fill();}
+  // ابر
+  const nc=ACT_CLOUDS[W]||0;
+  for(let i=0;i<clouds.length;i++){
+    const cl=clouds[i];cl.x+=cl.sp*dt*(0.5+WEATHER[W].wind);if(cl.x>CW+120)cl.x=-120;
+    if(i>=nc)continue;
+    const dark=W==='storm'||W==='rain';
+    c.fillStyle=dark?'rgba(40,46,62,.55)':'rgba(235,240,250,.42)';
+    ellipse(c,cl.x,cl.y,70*cl.s,28*cl.s);ellipse(c,cl.x+38*cl.s,cl.y+6,48*cl.s,22*cl.s);ellipse(c,cl.x-36*cl.s,cl.y+8,44*cl.s,20*cl.s);
+  }
+  // بارش
+  const nd=ACT_DROPS[W]||0;
+  if(nd){
+    if(W==='cold'){
+      c.fillStyle='rgba(255,255,255,.9)';
+      for(let i=0;i<nd;i++){const d=drops[i];d.y+=dt*45*d.v;d.x+=Math.sin(tReal*2+d.ph)*8*dt;if(d.y>CH){d.y=-4;d.x=Math.random()*CW;}c.beginPath();c.arc(d.x,d.y,2,0,7);c.fill();}
+    }else{
+      c.strokeStyle='rgba(170,205,255,.6)';c.lineWidth=1.2;c.beginPath();
+      const sl=W==='storm'?6:2;
+      for(let i=0;i<nd;i++){const d=drops[i];d.y+=dt*520*d.v;d.x+=dt*sl*60*d.v;if(d.y>CH){d.y=-12;d.x=Math.random()*CW;}if(d.x>CW)d.x-=CW;c.moveTo(d.x,d.y);c.lineTo(d.x+sl,d.y+11);}
+      c.stroke();
+    }
+  }
+  if(W==='heat'){c.fillStyle='rgba(255,140,40,'+(0.10+0.04*Math.sin(tReal*2))+')';c.fillRect(0,0,CW,CH);}
+  if(W==='cold'){c.fillStyle='rgba(160,200,255,.10)';c.fillRect(0,0,CW,CH);}
+  // شب
+  if(night>0.02){c.fillStyle='rgba(6,12,45,'+(0.6*night)+')';c.fillRect(0,0,CW,CH);}
+  // نور شب
+  if(night>0.25){
+    c.save();c.globalCompositeOperation='lighter';
+    c.globalAlpha=clamp((night-0.25)*1.6,0,1);
+    c.fillStyle='#ffd98a';
+    for(const b of blocks)if((b.type==='res'||b.type==='comm')&&!blockDark(b))for(const bl of b.bl)drawBldLights(c,bl);
+    c.fillStyle='#ffe9a8';
+    for(const k of cars){
+      if(k.i>=active)continue;
+      if(k.axis==='h')c.fillRect(k.pos+(k.dir>0?4:-8),k.line*CELLH+(k.dir>0?4:-9),4,6);
+      else c.fillRect(k.line*CELLW+(k.dir>0?-9:4),k.pos+(k.dir>0?4:-8),6,4);
+    }
+    c.fillStyle='rgba(255,220,140,.5)';
+    for(let j=0;j<=ROWS;j++)for(let i=0;i<=COLS;i++){c.beginPath();c.arc(i*CELLW,j*CELLH,5,0,7);c.fill();}
+    c.restore();
+  }
+  if(flash>0){c.fillStyle='rgba(255,255,255,'+flash*0.45+')';c.fillRect(0,0,CW,CH);}
+  // خورشید / ماه
+  c.font='26px sans-serif';c.textAlign='left';c.direction='ltr';
+  c.fillText(hr>=6&&hr<18?'☀️':'🌙',CW-44,34);
+}
+
+/* ============ حلقه اصلی ============ */
+let last=performance.now(),acc=0;
+function syncSpeed(){document.querySelectorAll('#spd button').forEach(b=>b.classList.toggle('on',+b.dataset.spd===S.speed));}
+function loop(now){
+  let dt=(now-last)/1000;last=now;
+  if(dt>0.1)dt=0.1;
+  if(S.speed>0&&!S.over){
+    acc+=dt*8*S.speed;
+    let n=0;
+    while(acc>=10&&n<60){tick(10);acc-=10;n++;}
+    if(n>=60)acc=0;
+  }
+  updateFx(S.speed>0?dt:dt*0.3);
+  drawCity(S.speed>0?dt:0);
+  updateUI(false);
+  updateCharts();
+  requestAnimationFrame(loop);
+}
+
+/* ============ رویدادهای ورودی ============ */
+document.addEventListener('click',e=>{
+  const t=e.target.closest('button');if(!t)return;
+  if(t.dataset.buy)buy(t.dataset.buy);
+  else if(t.dataset.sw){S[t.dataset.sw]=!S[t.dataset.sw];updateUI(true);}
+  else if(t.dataset.rat!==undefined){S.rationing=+t.dataset.rat;updateUI(true);}
+  else if(t.dataset.lab)setLab(t.dataset.lab);
+  else if(t.dataset.spd!==undefined){S.speed=+t.dataset.spd;syncSpeed();}
+  else if(t.dataset.tab){
+    document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b===t));
+    document.querySelectorAll('.pane').forEach(p=>p.classList.toggle('on',p.id==='p_'+t.dataset.tab));
+  }
+  else if(t.id==='seedBtn')seedClouds();
+  else if(t.id==='btnHelp')showHelp();
+  else if(t.id==='btnReset')showModal('<h2>شروع مجدد؟</h2><p>همه پیشرفت فعلی از بین می‌رود.</p>',[{t:'بله، شروع مجدد',fn:resetGame},{t:'انصراف',sec:true}]);
+});
+document.addEventListener('pointerdown',e=>{
+  const b=e.target.closest&&e.target.closest('button');
+  if(!b||b.disabled||b.classList.contains('sw'))return;
+  const r=b.getBoundingClientRect(),d=Math.max(r.width,r.height)*2;
+  const sp=document.createElement('span');sp.className='rip';
+  sp.style.cssText='width:'+d+'px;height:'+d+'px;left:'+(e.clientX-r.left-d/2)+'px;top:'+(e.clientY-r.top-d/2)+'px';
+  b.appendChild(sp);setTimeout(()=>sp.remove(),600);
+});
+$('#gasPct').addEventListener('input',e=>{S.gasPct=+e.target.value;updateUI(true);});
+$('#tariff').addEventListener('input',e=>{S.tariff=+e.target.value;updateUI(true);});
+document.addEventListener('keydown',e=>{
+  if($('#modal').classList.contains('on'))return;
+  if(e.code==='Space'){e.preventDefault();S.speed=S.speed?0:1;syncSpeed();}
+  else if(e.key==='1'){S.speed=1;syncSpeed();}
+  else if(e.key==='2'){S.speed=3;syncSpeed();}
+  else if(e.key==='3'){S.speed=8;syncSpeed();}
+});
+
+/* ============ شروع ============ */
+buildUI();buildCity();initCars();initFx();genForecast();
+log('🏙️ به شهر savyron خوش آمدید. شبکه برق، ترافیک و آب را پایدار نگه دارید.','good');
+window.__city={get S(){return S;},tick,buy,newState,resetGame};
+updateUI(true);
+if(typeof requestAnimationFrame==='function'){
+  requestAnimationFrame(t=>{last=t;loop(t);});
+  showHelp();
+}
+})();
+</script>
+</body>
+</html>
